@@ -1,16 +1,17 @@
 from flask import Flask, render_template, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email, Length
+from flask_bootstrap import Bootstrap5
 
 class LoginForm(FlaskForm):
-    email = StringField(label='Email', validators=[DataRequired()])
-    password = PasswordField(label='Password', validators=[DataRequired()])
+    email = StringField(label='Email', validators=[DataRequired(), Email(message="Please enter a valid email address.")])
+    password = PasswordField(label='Password', validators=[DataRequired(), Length(min=8, message="Password must be at least 8 characters long.")])
     submit = SubmitField(label="Log In")
 
 app = Flask(__name__)
 app.secret_key = "yogurt"
-
+bootstrap = Bootstrap5(app)
 @app.route("/")
 def home():
     return render_template('index.html')
